@@ -243,6 +243,7 @@ Route::middleware(['auth', 'role:DIREKTUR'])->prefix('direktur')->name('direktur
         Route::put('/{product}', [DirekturProdukController::class, 'update'])->name('update');
         Route::delete('/{product}', [DirekturProdukController::class, 'destroy'])->name('destroy');
         Route::post('/{product}/toggle-status', [DirekturProdukController::class, 'toggleStatus'])->name('toggle-status');
+        Route::post('{product}/review', [DirekturProdukController::class, 'storeReview'])->name('review');
     });
 
     // 4. Monitoring Piutang, Tagihan Tempo & Risiko Kredit Klien B2B

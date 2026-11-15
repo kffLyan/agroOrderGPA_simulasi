@@ -198,6 +198,10 @@
                                             {{ $prod->description ?: 'Komoditas hortikultura binaan GPA' }}
                                         </p>
                                     </div>
+                                    <div class="flex items-center gap-1 text-xs text-amber-500 font-bold mt-1">
+                                        <span>⭐ {{ number_format($prod->reviews()->avg('rating') ?: 0, 1) }}</span>
+                                        <span class="text-ink-subtle text-[10px]">({{ $prod->reviews()->count() }} ulasan)</span>
+                                    </div>
                                 </div>
                             </td>
 

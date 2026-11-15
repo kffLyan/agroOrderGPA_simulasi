@@ -7,12 +7,14 @@ use App\Http\Requests\SimpanProdukRequest;
 use App\Http\Requests\PerbaruiProdukRequest;
 use App\Models\ActivityLog;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Services\ProductService;
 use Exception;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 // Controller penetapan harga dasar, katalog komoditas, dan kebijakan mutu sayuran oleh Direktur Utama
 class ProdukController extends Controller
@@ -99,6 +101,26 @@ class ProdukController extends Controller
             return back()->withInput()->with('error', 'Gagal memperbarui komoditas: ' . $exception->getMessage());
         }
     }
+
+    public function storeReview(Request $request, Product $product): RedirectResponse
+    {
+        $validated = $request->validate([
+            'rating' => ['required', 'integer', 'min:1', 'max:5'],
+            'review' => ['nullable', 'string', 'max:500']
+        ]);
+        
+        ProductReview::create([
+            'user_id'    => Auth::id(),
+            'product_id' => $product->id,
+            'rating'     => $validated['rating'],
+            'review'     => $validated['review'] ?? null,
+        ]);
+
+        ActivityLog::record('CREATE', 'REVIEW', "Ulasan bintang {$validated['rating']} untuk produk {$product->name}");
+
+        return back()->with('success', 'Ulasan berhasil disimpan!');
+    }
+    
 
     // Mengubah status aktif komoditas untuk menentukan apakah tampil di katalog pemesanan klien
     public function toggleStatus(Product $product): RedirectResponse
