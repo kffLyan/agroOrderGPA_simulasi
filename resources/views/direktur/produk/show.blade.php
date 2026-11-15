@@ -201,5 +201,61 @@
             </table>
         </div>
     </section>
+    {{-- Seksi Ulasan & Rating Komoditas --}}
+    <section class="rounded-2xl border border-line-hair bg-surface p-6 shadow-card space-y-6">
+        <header class="flex items-center justify-between border-b border-line-hair pb-4">
+            <div>
+                <h2 class="text-base font-bold text-ink">Ulasan & Rating Komoditas</h2>
+                <p class="text-xs text-ink-body">Rata-rata: ⭐ {{ number_format($product->reviews()->avg('rating') ?: 0, 1) }} dari {{ $product->reviews()->count() }} ulasan</p>
+            </div>
+        </header>
+
+        {{-- Form Tambah Ulasan --}}
+        <form action="{{ route('direktur.produk.review', $product->id) }}" method="POST" class="space-y-3 bg-surface-shell/50 p-4 rounded-xl border border-line-board">
+            @csrf
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                <div>
+                    <label class="block text-xs font-bold text-ink mb-1">Beri Bintang (1 - 5)</label>
+                    <select name="rating" required class="w-full text-xs rounded-lg border-line-board p-2 bg-surface text-ink">
+                        <option value="5">⭐⭐⭐⭐⭐ (5 - Sangat Bagus)</option>
+                        <option value="4">⭐⭐⭐⭐ (4 - Bagus)</option>
+                        <option value="3">⭐⭐⭐ (3 - Cukup)</option>
+                        <option value="2">⭐⭐ (2 - Kurang)</option>
+                        <option value="1">⭐ (1 - Buruk)</option>
+                    </select>
+                </div>
+                <div class="md:col-span-3">
+                    <label class="block text-xs font-bold text-ink mb-1">Catatan Ulasan</label>
+                    <input type="text" name="review" placeholder="Tulis catatan kualitas komoditas ini..." class="w-full text-xs rounded-lg border-line-board p-2 bg-surface text-ink">
+                </div>
+            </div>
+            <div class="text-right">
+                <button type="submit" class="rounded-lg bg-brand px-4 py-2 text-xs font-bold text-accent hover:bg-brand-deep transition">
+                    Kirim Ulasan
+                </button>
+            </div>
+        </form>
+
+        {{-- List Ulasan yang Sudah Ada --}}
+        <div class="space-y-3">
+            <h3 class="text-xs font-bold uppercase tracking-wider text-ink-body">Riwayat Ulasan Terkini</h3>
+            <div class="divide-y divide-line-hair">
+                @forelse ($product->reviews()->latest()->get() as $rev)
+                    <div class="py-3 flex items-start justify-between gap-4">
+                        <div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-xs font-bold text-amber-500">⭐ {{ $rev->rating }}/5</span>
+                                <span class="text-xs font-semibold text-ink">{{ $rev->user?->name ?: 'Pengguna' }}</span>
+                                <span class="text-[10px] text-ink-subtle">{{ $rev->created_at->diffForHumans() }}</span>
+                            </div>
+                            <p class="text-xs text-ink-body mt-1">{{ $rev->review ?: 'Tidak ada komentar teks.' }}</p>
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-xs text-ink-subtle italic py-2">Belum ada ulasan untuk komoditas ini.</p>
+                @endforelse
+            </div>
+        </div>
+    </section>
 </div>
 @endsection

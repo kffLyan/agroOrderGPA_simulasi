@@ -109,14 +109,20 @@ class ProdukController extends Controller
             'review' => ['nullable', 'string', 'max:500']
         ]);
         
-        ProductReview::create([
-            'user_id'    => Auth::id(),
-            'product_id' => $product->id,
-            'rating'     => $validated['rating'],
-            'review'     => $validated['review'] ?? null,
-        ]);
+        try {
+            DB::transaction(function () use ($validated, $product) {
+                ProductReview::create([
+                    'user_id'    => Auth::id(),
+                    'product_id' => $product->id,
+                    'rating'     => $validated['rating'],
+                    'review'     => $validated['review'] ?? null,
+                ]);
 
-        ActivityLog::record('CREATE', 'REVIEW', "Ulasan bintang {$validated['rating']} untuk produk {$product->name}");
+                ActivityLog::record('CREATE', 'REVIEW', "Ulasan bintang {$validated['rating']} untuk produk {$product->name}");
+            });
+        } catch (Exception $exception) {
+            return back()->withInput()->with('error', 'Gagal menyimpan ulasan: ' . $exception->getMessage());
+        }
 
         return back()->with('success', 'Ulasan berhasil disimpan!');
     }
