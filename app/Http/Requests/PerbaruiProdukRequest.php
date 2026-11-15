@@ -30,6 +30,7 @@ class PerbaruiProdukRequest extends FormRequest
             'preset_image'  => ['nullable', 'string', 'max:255'],
             'description'   => ['nullable', 'string', 'max:1000'],
             'is_active'     => ['required'],
+            'min_stock'     => ['nullable', 'numeric', 'min:10'],
         ];
     }
 }

@@ -14,7 +14,7 @@ class Product extends Model
 
     protected $fillable = [
         'sku', 'name', 'unit', 'grade', 'base_price',
-        'minimum_order', 'image_url', 'description', 'is_active',
+        'minimum_order', 'image_url', 'description', 'is_active', 'min_stock',
     ];
 
     protected $appends = [

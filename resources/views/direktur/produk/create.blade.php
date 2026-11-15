@@ -120,6 +120,13 @@
                     <input type="number" id="minimum_order" name="minimum_order" value="{{ old('minimum_order', '5') }}" min="0.1" step="any" required
                         class="w-full rounded border-line-board bg-surface-shell px-3 py-2 text-xs font-mono font-bold text-ink focus:border-brand focus:ring-1 focus:ring-brand">
                 </div>
+
+                {{-- Stok Minimal --}}
+                <div>
+                    <label for="min_stock" class="block font-bold text-ink mb-1">Stok Minimal</label>
+                    <input type="number" id="min_stock" name="min_stock" value="{{ old('min_stock', '10') }}" min="10" step="0.1"
+                        class="w-full rounded border-line-board bg-surface-shell px-3 py-2 text-xs font-mono font-bold text-ink focus:border-brand focus:ring-1 focus:ring-brand">
+                </div>
             </div>
 
             {{-- Bagian Pemilihan / Upload Foto Produk --}}

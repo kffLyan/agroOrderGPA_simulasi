@@ -14,6 +14,33 @@
             </div>
         </div>
 
+        {{-- Formulir Filter & Pencarian --}}
+        <form method="GET" action="{{ route('direktur.log-aktivitas') }}" class="mb-6 flex flex-wrap gap-3 items-center">
+            {{-- Dropdown Aksi --}}
+            <select name="action" class="rounded-xl border border-line bg-surface px-3 py-2 text-xs font-semibold text-ink focus:border-brand focus:outline-none">
+                <option value="ALL">Semua Aksi</option>
+                <option value="CREATE" {{ request('action') === 'CREATE' ? 'selected' : '' }}>CREATE (Tambah)</option>
+                <option value="UPDATE" {{ request('action') === 'UPDATE' ? 'selected' : '' }}>UPDATE (Ubah)</option>
+                <option value="DELETE" {{ request('action') === 'DELETE' ? 'selected' : '' }}>DELETE (Hapus)</option>
+            </select>
+
+            {{-- Input Pencarian --}}
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari keterangan aktivitas..." 
+                class="rounded-xl border border-line bg-surface px-4 py-2 text-xs text-ink placeholder:text-ink-subtle focus:border-brand focus:outline-none w-64">
+
+            {{-- Tombol Filter --}}
+            <button type="submit" class="rounded-xl bg-brand px-4 py-2 text-xs font-bold text-white hover:bg-brand-deep transition-all shadow-sm">
+                Filter
+            </button>
+
+            {{-- Tombol Reset --}}
+            @if(request('action') || request('search'))
+                <a href="{{ route('direktur.log-aktivitas') }}" class="text-xs text-ink-muted hover:text-ink underline ml-1">
+                    Reset
+                </a>
+            @endif
+        </form>
+
         {{-- Tabel Data Log --}}
         <div class="overflow-x-auto rounded-xl border border-line">
             <table class="min-w-full divide-y divide-line text-sm">

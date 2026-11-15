@@ -226,8 +226,12 @@
 
                             {{-- Stok Riil --}}
                             <td class="px-3 py-3.5">
-                                <p class="gpa-meta font-bold {{ $availableStock > 0 ? 'text-success-deep' : 'text-danger' }}">
-                                    {{ number_format($availableStock, 0, ',', '.') }} {{ $prod->unit }}
+                                <p class="gpa-meta font-bold ">
+                                    @if ($availableStock <= $prod->min_stock)
+                                        <span class="px-2 py-1 rounded text-xs font-bold bg-red-100 text-red-700">STOK KRITIS</span>
+                                    @else
+                                        <span class="px-2 py-1 rounded text-xs font-bold bg-emerald-100 text-emerald-700">STOK AMAN</span>
+                                    @endif
                                 </p>
                                 <p class="text-[10px] text-ink-body">{{ $prod->harvestBatches->count() }} batch panen</p>
                             </td>

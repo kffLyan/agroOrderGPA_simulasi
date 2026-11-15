@@ -48,8 +48,18 @@ class TataKelolaController extends Controller
         ));
     }
 
-    public function activityLogs() {
-        $logs = ActivityLog::with('user')->latest()->paginate(10);
+    public function activityLogs(Request $request) {
+        $query = ActivityLog::with('user')->latest();
+
+        if ($request->filled('action') && $request->action !== 'ALL') {
+            $query->where('action', $request->action);
+        }
+
+        if ($request->filled('search')) {
+            $query->where('description', 'like', '%' . $request->search . '%');
+        }
+
+        $logs = $query->paginate(10)->withQueryString();
 
         return view('direktur.log-aktivitas', compact('logs'));
     }

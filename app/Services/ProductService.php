@@ -107,6 +107,7 @@ class ProductService
             'minimum_order' => $data['minimum_order'],
             'image_url'     => $imageUrl,
             'description'   => $data['description'] ?? null,
+            'min_stock'     => $data['min_stock'],
             'is_active'     => (bool) $data['is_active'],
         ]);
 
@@ -172,6 +173,7 @@ class ProductService
             'minimum_order' => $data['minimum_order'],
             'image_url'     => $imageUrl,
             'description'   => $data['description'] ?? null,
+            'min_stock'     => $data['min_stock'],
             'is_active'     => (bool) $data['is_active'],
         ]);
 
