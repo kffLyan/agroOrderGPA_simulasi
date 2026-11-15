@@ -291,6 +291,7 @@ Route::middleware(['auth', 'role:DIREKTUR'])->prefix('direktur')->name('direktur
 
     // 9. Inspeksi Pengawasan Pesanan Terintegrasi
     Route::get('/inspeksi-pesanan/{order}', [DirekturInspeksiPesananController::class, 'show'])->name('inspeksi-pesanan.show');
+    Route::get('/log-aktivitas', [DirekturTataKelolaController::class, 'activityLogs'])->name('log-aktivitas');
 });
 
 // Modul profil akun pengguna dan pencetakan dokumen resmi format standar A4

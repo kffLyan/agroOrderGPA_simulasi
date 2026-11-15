@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Direktur;
 
 use App\Http\Controllers\Controller;
+use App\Models\ActivityLog;
 use App\Models\Contract;
 use App\Models\Invoice;
 use App\Models\User;
@@ -45,6 +46,12 @@ class TataKelolaController extends Controller
             'totalUtilizedCredit',
             'exposurePercent'
         ));
+    }
+
+    public function activityLogs() {
+        $logs = ActivityLog::with('user')->latest()->paginate(10);
+
+        return view('direktur.log-aktivitas', compact('logs'));
     }
 
     // Memperbarui parameter kebijakan operasional (toleransi susut gudang, plafon kredit TOP, tarif PPN, dan ongkos kirim)
