@@ -17,7 +17,7 @@ class Order extends Model
         'target_delivery_date', 'delivery_address',
         'grand_total', 'status', 'verified_by', 'surat_jalan_number',
         'driver_id', 'vehicle_plate_number', 'departure_time',
-        'arrival_time', 'pod_photo_url', 'received_by_name',
+        'arrival_time', 'pod_photo_url', 'received_by_name', 'catatan',
     ];
 
     protected $appends = [

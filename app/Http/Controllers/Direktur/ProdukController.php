@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Direktur;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SimpanProdukRequest;
 use App\Http\Requests\PerbaruiProdukRequest;
+use App\Models\ActivityLog;
 use App\Models\Product;
 use App\Services\ProductService;
 use Exception;
@@ -51,6 +52,8 @@ class ProdukController extends Controller
                 'DIR-01 [ROOT-ACCESS]'
             );
 
+            ActivityLog::record('CREATE', 'PRODUK', "Direktur menambahkan komoditas baru: {$product->name} (SKU:{$product->sku}");
+
             return redirect()->route('direktur.produk.index')
                 ->with('success', "Komoditas {$product->name} berhasil ditambahkan ke katalog resmi GPA.");
         } catch (Exception $exception) {
@@ -88,6 +91,8 @@ class ProdukController extends Controller
                 'DIR-01 [ROOT-ACCESS]'
             );
 
+            ActivityLog::record('UPDATE', 'PRODUK', "Direktur memperbarui informasi komoditas: {$updatedProduct->name}");
+
             return redirect()->route('direktur.produk.index')
                 ->with('success', "Data komoditas {$updatedProduct->name} berhasil diperbarui.");
         } catch (Exception $exception) {
@@ -116,6 +121,7 @@ class ProdukController extends Controller
             $directorName = Auth::user()?->name ?: 'Direktur Utama';
             $this->productService->deleteProduct($product, 'DIREKTUR', $directorName);
 
+            ActivityLog::record('DELETE', 'PRODUK', "Direktur menghapus komoditas: {$product->name}");
             return redirect()->route('direktur.produk.index')
                 ->with('success', "Komoditas {$product->name} berhasil dinonaktifkan dari katalog operasional.");
         } catch (Exception $exception) {
